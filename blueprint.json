@@ -23,7 +23,7 @@
         "description": "Provides zeroconf support"
       }
     },
-    "timestamp": "2017-11-15T14:20:20+11:00"
+    "timestamp": "2017-11-15T14:27:13+11:00"
   },
   "software": {
     "base": {
@@ -75,6 +75,26 @@
         "immutable": true,
         "input": {
           "type": "string"
+        }
+      }
+    ],
+    "actionators": [
+      {
+        "name": "list_hosts",
+        "label": "List host",
+        "return_type": "json",
+        "script": {
+          "language": "sh",
+          "content": "#!/bin/bash\r\n\r\necho -n '{\"hosts\":['\r\n if test -f /home/avahi/hosts_list\r\n  then\r\nfirst=1\r\ncat /home/avahi/hosts_list | while read LINE\r\ndo\r\n if test -z \"$LINE\"\r\n  then\r\n   continue\r\n  fi\r\n  if test $first -ne 1\r\n   then\r\n    echo ,\r\n    else \r\n    first=0\r\n   fi \r\n  echo -n '\"'$LINE'\"'\r\ndone\r\nfi\r\necho ']}'"
+        }
+      },
+      {
+        "name": "list_servces",
+        "label": "List Services ",
+        "return_type": "none",
+        "script": {
+          "language": "sh",
+          "content": "#!/bin/bash\r\n\r\necho -n '{\"services\":['\r\nfirst=1\r\n if test -f /home/avahi/services_list\r\n  then\r\ncat /home/avahi/services_list | while read LINE\r\ndo\r\n if test -z \"$LINE\"\r\n  then\r\n   continue\r\n  fi\r\n  if test $first -ne 1\r\n   then\r\n    echo ,\r\n    else \r\n    first=0\r\n   fi \r\n  echo -n '\"'$LINE'\"'\r\ndone\r\n fi\r\necho ']}'"
         }
       }
     ],
