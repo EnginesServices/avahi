@@ -23,7 +23,7 @@
         "description": "Provides zeroconf support"
       }
     },
-    "timestamp": "2017-11-15T17:32:54+11:00"
+    "timestamp": "2017-11-22T14:11:14+11:00"
   },
   "software": {
     "base": {
@@ -100,8 +100,8 @@
     ],
     "configurators": [
       {
-        "name": "default_mdns_domain ",
-        "label": "default_mdns_domain ",
+        "name": "default_mdns_domain",
+        "label": "default_mdns_domain",
         "variables": [
           {
             "name": "default_mdns_domain ",
