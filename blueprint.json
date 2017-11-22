@@ -23,14 +23,14 @@
         "description": "Provides zeroconf support"
       }
     },
-    "timestamp": "2017-11-15T14:27:13+11:00"
+    "timestamp": "2017-11-15T17:32:54+11:00"
   },
   "software": {
     "base": {
       "name": "avahi",
       "accepts": [
         "ManagedEngine",
-        "ManagesService"
+        "ManagedService"
       ],
       "publisher_namespace": "EnginesSystem",
       "type_path": "avahi",
@@ -47,8 +47,8 @@
     },
     "ports": [
       {
-        "port": 5353,
-        "external": 5353,
+        "port": "5353",
+        "external": "5353",
         "protocol": "udp"
       }
     ],
