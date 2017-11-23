@@ -23,7 +23,7 @@
         "description": "Provides zeroconf support"
       }
     },
-    "timestamp": "2017-11-22T14:11:14+11:00"
+    "timestamp": "2017-11-23T19:58:30+11:00"
   },
   "software": {
     "base": {
@@ -61,7 +61,7 @@
     "consumer_params": [
       {
         "name": "hostname",
-        "value": " _Engines_Builder(engine_name)",
+        "value": "_Engines_Builder(engine_name)",
         "mandatory": true,
         "immutable": true,
         "input": {
@@ -70,9 +70,10 @@
       },
       {
         "name": "name",
-        "value": " _Engines_Builder(engine_name)",
+        "value": "_Engines_Builder(engine_name)",
         "mandatory": true,
         "immutable": true,
+        "ask_at_build_time": true,
         "input": {
           "type": "string"
         }
