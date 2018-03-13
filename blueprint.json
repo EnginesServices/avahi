@@ -2,8 +2,8 @@
   "schema": {
     "type": "service_blueprint",
     "version": {
-      "major": 1,
-      "minor": 0
+      "major": 0,
+      "minor": 1
     },
     "origin": "Engines Developer Studio 0.2"
   },
@@ -23,25 +23,23 @@
         "description": "Provides zeroconf support"
       }
     },
-    "timestamp": "2017-11-23T19:58:30+11:00"
+    "timestamp": "2018-03-13T11:42:51+11:00"
   },
   "software": {
     "base": {
       "name": "avahi",
-      "accepts": [
-        "ManagedEngine",
-        "ManagedService"
-      ],
       "publisher_namespace": "EnginesSystem",
       "type_path": "avahi",
       "service_handle_field": "hostname",
       "parent_image": "engines/servicebase",
-      "run_as_user": "avahi",
       "deployment_type": "worker",
       "memory": {
         "required": 32,
         "recommended": 32
       },
+      "run_as_user": "avahi"
+    },
+    "disposition": {
       "attach_post_build": true,
       "soft_service": true
     },
@@ -58,12 +56,19 @@
         "content": "#!/bin/sh\r\n\r\nPID_FILE=/tmp/avahi-publisher.pid\r\nexport PID_FILE\r\nKILL_SCRIPT=/home/engines/scripts/signal/kill_avahi.sh\r\nexport KILL_SCRIPT\r\n\r\n. /home/engines/functions/trap.sh\r\n\r\nservice_clear_restart_required\r\n\r\nip=`cat /home/engines/system/net/ip`\r\necho \"$ip mgmt.local\" >/etc/avahi/hosts\r\next_interface=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' |head -1`\r\n\r\ninterfaces=\"${ext_interface} , docker0\"\r\necho binding to $interfaces\r\ncat /home/engines/templates/avahi/avahi-daemon.conf.tmpl | sed \"/INTERFACES/s//$interfaces/\" > /tmp/avahi-daemon.conf\r\ncp /tmp/avahi-daemon.conf /etc/avahi/avahi-daemon.conf\r\n\r\n\r\nsudo -n dbus-daemon --system --fork --nopidfile\r\ndbus_pid=$!\r\necho $dbus_pid >/tmp/dbus.pid\r\n\r\nsudo -n /usr/sbin/avahi-daemon --no-chroot  & \r\necho $! >/tmp/avahi-daemon.pid\r\n\r\ntouch /home/avahi/hosts/engines.local\r\ntouch /home/avahi/hosts/avahi.local\r\n\r\nls /home/avahi/hosts/ > /home/avahi/hosts_list\r\n\r\n/home/engines/scripts/engine/publish_aliases.sh  2>/dev/null &\r\n\r\nstartup_complete\r\n\r\nwait\r\nexit_code=$?\r\n\r\nshutdown_complete"
       }
     },
+    "consumers": {
+      "accepts": [
+        "ManagedEngine",
+        "ManagedService"
+      ]
+    },
     "consumer_params": [
       {
         "name": "hostname",
         "value": "_Engines_Builder(engine_name)",
         "mandatory": true,
         "immutable": true,
+        "ask_at_build_time": true,
         "input": {
           "type": "string"
         }
@@ -73,7 +78,6 @@
         "value": "_Engines_Builder(engine_name)",
         "mandatory": true,
         "immutable": true,
-        "ask_at_build_time": true,
         "input": {
           "type": "string"
         }
